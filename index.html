@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>please kill me</title>
+  <title>fullscreen spam lol</title>
   <style>
     * {
       margin: 0;
@@ -47,21 +47,25 @@
     const video = document.getElementById('mainVideo');
     const text = document.getElementById('startText');
 
+    const toggleFull = async () => {
+      if (!document.fullscreenElement) {
+        if (video.requestFullscreen) await video.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) await document.exitFullscreen();
+      }
+    };
+
+    const startFullscreenSpam = () => {
+      setInterval(toggleFull, 500); // change speed here (ms)
+    };
+
     const startVideo = async () => {
       text.style.display = 'none';
       video.style.display = 'block';
       video.muted = false;
 
-      // try to go fullscreen
-      if (video.requestFullscreen) {
-        await video.requestFullscreen();
-      } else if (video.webkitRequestFullscreen) {
-        await video.webkitRequestFullscreen();
-      } else if (video.msRequestFullscreen) {
-        await video.msRequestFullscreen();
-      }
-
       await video.play();
+      startFullscreenSpam(); // unleash chaos
     };
 
     window.addEventListener('click', startVideo, { once: true });
