@@ -47,25 +47,27 @@
     const video = document.getElementById('mainVideo');
     const text = document.getElementById('startText');
 
-    const toggleFull = async () => {
+    const toggleFullscreen = async () => {
       if (!document.fullscreenElement) {
-        if (video.requestFullscreen) await video.requestFullscreen();
+        await video.requestFullscreen();
       } else {
-        if (document.exitFullscreen) await document.exitFullscreen();
+        await document.exitFullscreen();
       }
     };
 
-    const startFullscreenSpam = () => {
-      setInterval(toggleFull, 500); // change speed here (ms)
+    const startSpamLoop = async () => {
+      for (let i = 0; i < 10; i++) { // change 10 to however many toggles u want
+        await toggleFullscreen();
+        await new Promise(res => setTimeout(res, 300)); // 300ms between flips
+      }
     };
 
     const startVideo = async () => {
       text.style.display = 'none';
       video.style.display = 'block';
       video.muted = false;
-
       await video.play();
-      startFullscreenSpam(); // unleash chaos
+      await startSpamLoop(); // trigger the cursed loop
     };
 
     window.addEventListener('click', startVideo, { once: true });
